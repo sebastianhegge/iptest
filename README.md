@@ -1,6 +1,6 @@
 # iptest
 
-A small tool to test several IP settings with the help of [ip-api.com](http://ip-api.com). See [demo](iptest.hegge.it).
+A small tool to test several IP settings with the help of [ip-api.com](http://ip-api.com). See [demo](http://iptest.hegge.it).
 
 ## Requirements
 
