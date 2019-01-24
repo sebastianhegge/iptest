@@ -247,7 +247,7 @@ $(document).ready(function(){
 
       var addrs = [];
       function updateDisplay(newAddr) {
-        if (newAddr != '0.0.0.0') {
+        if (newAddr != '0.0.0.0' && addrs.indexOf(newAddr) == -1) {
           addrs.push(newAddr);
         }
         $('#content-local-ip').text(addrs.join(', ') || '-');
