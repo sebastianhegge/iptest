@@ -18,7 +18,7 @@ $browscap_translation = [
 
 if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'curl')!==false){
   print($_SERVER['REMOTE_ADDR']."\n");
-  if($_SERVER['REMOTE_ADDR'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])){ 
+  if($_SERVER['REMOTE_ADDR'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])){
     print(gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n");
   }
 }
@@ -168,7 +168,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank">Impressum & Datenschutz</a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank">Source on GitHub</a> &middot; v1.6
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank">Impressum & Datenschutz</a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank">Source on GitHub</a> &middot; v1.7
             </div>
           </div>
         </div>

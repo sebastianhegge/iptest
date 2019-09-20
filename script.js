@@ -166,7 +166,7 @@ $(document).ready(function(){
 
   function get_dns_data() {
     var random_string = '';
-    for (i = 0; i < 32; i++) { 
+    for (i = 0; i < 32; i++) {
       random_string += '0123456789abcdefghijklmnopqrstuvwxyz'[Math.round(Math.random() * 35)]
     }
     $.ajax({
@@ -247,7 +247,7 @@ $(document).ready(function(){
 
       var addrs = [];
       function updateDisplay(newAddr) {
-        if (newAddr != '0.0.0.0' && addrs.indexOf(newAddr) == -1) {
+        if (newAddr != '0.0.0.0' && addrs.indexOf(newAddr) == -1 && newAddr.indexOf('-') == -1) {
           addrs.push(newAddr);
         }
         $('#content-local-ip').text(addrs.join(', ') || '-');
