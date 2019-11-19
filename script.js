@@ -41,6 +41,61 @@ function translate_link_type(link_type){
   }
 }
 
+function format_isp(data){
+  isp = '';
+  if(present(data.isp_website)){
+    isp = '<a href="' + data.isp_website + '" target="_blank">' + data.isp + '</a>';
+  }
+  else{
+    isp = data.isp;
+  }
+  return isp;
+}
+
+function format_as(data){
+  as = '';
+  if(present(data.as_number)){
+    as += data.as_number;
+  }
+  if(present(data.as_name)){
+    if(present(data.as_number)){
+      as += '<br/>';
+    }
+    as += data.as_name;
+  }
+  if(present(data.as_number)){
+    if(present(data.as_number) || present(data.as_name)){
+      as += '<br/>';
+    }
+    as += data.as_organisation;
+  }
+  return as;
+}
+
+function format_address(data){
+  address = '';
+  if(present(data.street)){
+    address += data.street + '<br/>';
+  }
+  if(present(data.zip)){
+    address += data.zip;
+  }
+  if(present(data.city)){
+    if(present(data.zip)){
+      address += ' ';
+    }
+    address += data.city + '<br/>';
+  }
+  if(present(data.country)){
+    address += data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">';
+  }
+  return address;
+}
+
+function present(val){
+  return !(val === undefined || val == null || val.length <= 0)
+}
+
 $(document).ready(function(){
   $.ajax({
     url: location.protocol + '//ipv4.' + location.host + '/ip.php',
@@ -49,14 +104,15 @@ $(document).ready(function(){
     success: function(data){
       $('#content-ipv4-ip').text(data);
       get_ipv4_host();
-      get_ipv4_data(data);
+      get_ipv4_data();
     },
     error: function(error){
       $('#content-ipv4-ip').text('-');
       $('#content-ipv4-hostname').text('-');
+      $('#content-ipv4-ip-network').text('-');
       $('#content-ipv4-isp').text('-');
       $('#content-ipv4-as').text('-');
-      $('#content-ipv4-country').text('-');
+      $('#content-ipv4-address').text('-');
     }
   });
 
@@ -67,14 +123,15 @@ $(document).ready(function(){
     success: function(data){
       $('#content-ipv6-ip').html(data.replace(/:/g, ':<wbr>'));
       get_ipv6_host();
-      get_ipv6_data(data);
+      get_ipv6_data();
     },
     error: function(error){
       $('#content-ipv6-ip').text('-');
       $('#content-ipv6-hostname').text('-');
+      $('#content-ipv6-ip-network').text('-');
       $('#content-ipv6-isp').text('-');
       $('#content-ipv6-as').text('-');
-      $('#content-ipv6-country').text('-');
+      $('#content-ipv6-address').text('-');
     }
   });
 
@@ -120,23 +177,26 @@ $(document).ready(function(){
     });
   };
 
-  function get_ipv4_data(ip) {
+  function get_ipv4_data() {
     $.ajax({
-      url: location.protocol + '//' + location.host + '/geo.php?ip=' + ip,
+      url: location.protocol + '//ipv4.' + location.host + '/geo.php',
       type: 'GET',
       crossDomain: true,
       success: function(data){
         if (data && data.status && data.status == 'success') {
-          $('#content-ipv4-isp').text(data.isp);
-          $('#content-ipv4-as').text(data.as);
-          $('#content-ipv4-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.countryCode.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">');
+          $('#content-ipv4-ip-network').text(data.ip_network);
+          $('#content-ipv4-isp').html(format_isp(data));
+          $('#content-ipv4-as').html(format_as(data));
+          $('#content-ipv4-address').html(format_address(data));
+          /* $('#content-ipv4-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">'); */
           $('#map-ipv4').addClass('map-height');
           init_map_ipv4(data.lat, data.lon);
         }
         else {
+          $('#content-ipv4-ip-network').text('-');
           $('#content-ipv4-isp').text('-');
           $('#content-ipv4-as').text('-');
-          $('#content-ipv4-country').text('-');
+          $('#content-ipv4-address').text('-');
         }
       }
     });
@@ -144,21 +204,24 @@ $(document).ready(function(){
 
   function get_ipv6_data(ip) {
     $.ajax({
-      url: location.protocol + '//' + location.host + '/geo.php?ip=' + ip,
+      url: location.protocol + '//ipv6.' + location.host + '/geo.php',
       type: 'GET',
       crossDomain: true,
       success: function(data){
         if (data && data.status && data.status == 'success') {
-          $('#content-ipv6-isp').text(data.isp);
-          $('#content-ipv6-as').text(data.as);
-          $('#content-ipv6-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.countryCode.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">');
+          $('#content-ipv6-ip-network').text(data.ip_network);
+          $('#content-ipv6-isp').html(format_isp(data));
+          $('#content-ipv6-as').html(format_as(data));
+          $('#content-ipv6-address').html(format_address(data));
+          /* $('#content-ipv6-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">'); */
           $('#map-ipv6').addClass('map-height');
           init_map_ipv6(data.lat, data.lon);
         }
         else {
+          $('#content-ipv6-ip-network').text('-');
           $('#content-ipv6-isp').text('-');
           $('#content-ipv6-as').text('-');
-          $('#content-ipv6-country').text('-');
+          $('#content-ipv6-address').text('-');
         }
       }
     });
@@ -247,7 +310,7 @@ $(document).ready(function(){
 
       var addrs = [];
       function updateDisplay(newAddr) {
-        if (newAddr != '0.0.0.0' && addrs.indexOf(newAddr) == -1 && newAddr.indexOf('-') == -1) {
+        if (newAddr != '0.0.0.0' && newAddr.indexOf('-') == -1 && addrs.indexOf(newAddr) == -1) {
           addrs.push(newAddr);
         }
         $('#content-local-ip').text(addrs.join(', ') || '-');

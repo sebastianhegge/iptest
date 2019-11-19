@@ -5,9 +5,10 @@ A small tool to test several IP settings with the help of [ip-api.com](http://ip
 ## Requirements
 
 * webserver with:
- * PHP
- * PHP Curl extension
- * PHP Browscap extension [website](https://browscap.org) / [download lite version](https://browscap.org/stream?q=Lite_PHP_BrowsCapINI)
+  * PHP
+  * PHP Curl extension
+  * PHP Browscap extension [website](https://browscap.org) / [download lite version](https://browscap.org/stream?q=Lite_PHP_BrowsCapINI)
+  * Apache Module MaxMind DB [GitHub](https://github.com/maxmind/mod_maxminddb) / [README](README-install-apache-mod-maxmind.md)
 * one webserver vhost with:
   * production-domain (for example DOMAIN.de), reachable via IPv4 and IPv6 (with an A Record and an AAAA Record)
   * ipv4 subdomain (ipv4.DOMAIN.de), reachable only via IPv4 (only an A Record)
@@ -22,7 +23,8 @@ A small tool to test several IP settings with the help of [ip-api.com](http://ip
 * [jQuery 3.3.1 min](https://code.jquery.com/jquery-3.3.1.min.js) in `/jquery`
 * [Bootstrap 4.0](https://getbootstrap.com/docs/4.0/getting-started/download/) in `/bootstrap`
 * [flag-icon-css project](https://github.com/lipis/flag-icon-css/archive/master.zip) in `/flags` (the content of `/flags/4x3`)
-* the service of [ip-api.com](http://ip-api.com)
+* the API service of [ip-api.com](http://ip-api.com)
+* the API service of [peeringdb.com](https://www.peeringdb.com/apidocs/)
 
 ## License
 MIT

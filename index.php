@@ -112,6 +112,10 @@ else {
                     <td id="content-ipv4-hostname"><img src="loader.gif" width="16" height="16" id="loader-ipv4-hostname"></td>
                   </tr>
                   <tr>
+                    <th scope="row">IP-Netz:</th>
+                    <td id="content-ipv4-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv4-ip"></td>
+                  </tr>
+                  <tr>
                     <th scope="row">ISP:</th>
                     <td id="content-ipv4-isp"><img src="loader.gif" width="16" height="16" id="loader-ipv4-isp"></td>
                   </tr>
@@ -121,7 +125,7 @@ else {
                   </tr>
                   <tr>
                     <th scope="row">Adresse:</th>
-                    <td id="content-ipv4-country"><img src="loader.gif" width="16" height="16" id="loader-ipv4-country"></td>
+                    <td id="content-ipv4-address"><img src="loader.gif" width="16" height="16" id="loader-ipv4-address"></td>
                   </tr>
                 </tbody>
               </table>
@@ -147,6 +151,10 @@ else {
                     <td id="content-ipv6-hostname"><img src="loader.gif" width="16" height="16" id="loader-ipv6-hostname"></td>
                   </tr>
                   <tr>
+                    <th scope="row">IP-Netz:</th>
+                    <td id="content-ipv6-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv6-ip"></td>
+                  </tr>
+                  <tr>
                     <th scope="row">ISP:</th>
                     <td id="content-ipv6-isp"><img src="loader.gif" width="16" height="16" id="loader-ipv6-isp"></td>
                   </tr>
@@ -156,7 +164,7 @@ else {
                   </tr>
                   <tr>
                     <th scope="row">Adresse:</th>
-                    <td id="content-ipv6-country"><img src="loader.gif" width="16" height="16" id="loader-ipv6-country"></td>
+                    <td id="content-ipv6-address"><img src="loader.gif" width="16" height="16" id="loader-ipv6-address"></td>
                   </tr>
                 </tbody>
               </table>
@@ -168,7 +176,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank">Impressum & Datenschutz</a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank">Source on GitHub</a> &middot; v1.7
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank">Impressum & Datenschutz</a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank">Source on GitHub</a> &middot; v2.0
             </div>
           </div>
         </div>
