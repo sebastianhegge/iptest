@@ -1,6 +1,7 @@
 # iptest
 
-A small tool to test several IP settings with the help of Apache Mod MaxMind, [peeringdb.com](https://www.peeringdb.com/apidocs/) and [ip-api.com](http://ip-api.com). See a demo at [ipte.st](http://ipte.st).
+A small tool to test several IP settings with the help of Apache Mod MaxMind, [peeringdb.com](https://www.peeringdb.com/apidocs/) and [ip-api.com](http://ip-api.com).  
+See a demo at [ipte.st](http://ipte.st).
 
 ## These values are determined
 * Current connection (IPv4 or IPv6)
@@ -19,7 +20,7 @@ A small tool to test several IP settings with the help of Apache Mod MaxMind, [p
 * Resulting suspected internet service provider (IPv4 and IPv6)
 * AS-informations (number, name and company), (IPv4 and IPv6)
 * Postal address (IPv4 and IPv6)
-* Google Maps Map for postal address  (IPv4 and IPv6)
+* Google Maps Map for postal address (IPv4 and IPv6)
 
 ## Requirements
 
