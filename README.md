@@ -1,6 +1,25 @@
 # iptest
 
-A small tool to test several IP settings with the help of [ip-api.com](http://ip-api.com). See [demo](http://ipte.st).
+A small tool to test several IP settings with the help of Apache Mod MaxMind, [peeringdb.com](https://www.peeringdb.com/apidocs/) and [ip-api.com](http://ip-api.com). See a demo at [ipte.st](http://ipte.st).
+
+## These values are determined
+* Current connection (IPv4 or IPv6)
+* DNS-Server (IP, Provider and Country)
+* EDNS-Subnetz (Transmitted to DNS-Server)
+* Local IP-Adresses (IPv4 and IPv6, only working in Firefox)
+* Network-MTU
+* Resulting suspected connection type
+* User agent
+* Device type
+* Operating system
+* Browser
+* IPv4 and IPv6 Address
+* Hostname (IPv4 and IPv6)
+* Associated AS Network (IPv4 and IPv6)
+* Resulting suspected internet service provider (IPv4 and IPv6)
+* AS-informations (number, name and company), (IPv4 and IPv6)
+* Postal address (IPv4 and IPv6)
+* Google Maps Map for postal address  (IPv4 and IPv6)
 
 ## Requirements
 
