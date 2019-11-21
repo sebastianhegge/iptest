@@ -59,6 +59,9 @@ function format_isp(data){
     if(present(data.zip)){
       isp += ' ';
     }
+    else if(isp.substr(-5) != '<br/>'){
+      isp += '<br/>';
+    }
     isp += data.city;
   }
   if(present(data.country)){
