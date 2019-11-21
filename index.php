@@ -123,10 +123,6 @@ else {
                     <th scope="row">AS:</th>
                     <td id="content-ipv4-as"><img src="loader.gif" width="16" height="16" id="loader-ipv4-as"></td>
                   </tr>
-                  <tr>
-                    <th scope="row">Adresse:</th>
-                    <td id="content-ipv4-address"><img src="loader.gif" width="16" height="16" id="loader-ipv4-address"></td>
-                  </tr>
                 </tbody>
               </table>
               <div id="map-ipv4">
@@ -162,10 +158,6 @@ else {
                     <th scope="row">AS:</th>
                     <td id="content-ipv6-as"><img src="loader.gif" width="16" height="16" id="loader-ipv6-as"></td>
                   </tr>
-                  <tr>
-                    <th scope="row">Adresse:</th>
-                    <td id="content-ipv6-address"><img src="loader.gif" width="16" height="16" id="loader-ipv6-address"></td>
-                  </tr>
                 </tbody>
               </table>
               <div id="map-ipv6">
@@ -176,7 +168,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank">Impressum & Datenschutz</a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank">Source on GitHub</a> &middot; v2.0
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank">Impressum & Datenschutz</a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank">Source on GitHub</a> &middot; v2.1
             </div>
           </div>
         </div>

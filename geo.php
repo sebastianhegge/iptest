@@ -17,21 +17,31 @@ else {
   $org_response_obj = json_decode($org_response);
   //print_r($org_response);
 
+  $ret_obj['country_code'] = (String)getenv('MM_COUNTRY_CODE_CITY_DB');
   $ret_obj['status'] = 'success';
-  $ret_obj['ip_network'] = getenv('MM_ASN_DB_NETWORK');
-  $ret_obj['country'] = getenv('MM_COUNTRY_NAME');
-  $ret_obj['country_code'] = getenv('MM_COUNTRY_CODE_CITY_DB');
-  $ret_obj['city'] = $org_response_obj->data[0]->city;
-  $ret_obj['zip'] = $org_response_obj->data[0]->zipcode;
-  $ret_obj['lat'] = (float)getenv('MM_LATITUDE');
-  $ret_obj['lon'] = (float)getenv('MM_LONGITUDE');
-  $ret_obj['isp'] = getenv('MM_AS_ORG');
+  $ret_obj['ip_network'] = (String)getenv('MM_ASN_DB_NETWORK');
+  $ret_obj['country'] = locale_get_display_region('-'.$ret_obj['country_code'], 'de');
+  $ret_obj['city'] = (String)getenv('MM_CITY_NAME');
+  $ret_obj['zip'] = '';
+  $ret_obj['lat'] = (Float)getenv('MM_LATITUDE');
+  $ret_obj['lon'] = (Float)getenv('MM_LONGITUDE');
+  $ret_obj['isp'] = (String)getenv('MM_AS_ORG');
   $ret_obj['isp_website'] = $org_response_obj->data[0]->website;
-  $ret_obj['street'] = $org_response_obj->data[0]->address1;
-  $ret_obj['state'] = $org_response_obj->data[0]->state;
+  $ret_obj['state'] = (String)getenv('MM_REGION_CODE');
   $ret_obj['as_number'] = $asn;
   $ret_obj['as_name'] = $asn_response_obj->data[0]->irr_as_set;
   $ret_obj['as_organisation'] = $org_response_obj->data[0]->name;
+  $ret_obj['as_country_code'] = $org_response_obj->data[0]->country;
+  if(isset($org_response_obj->data[0]->country) && strlen($org_response_obj->data[0]->country) > 0){
+    $ret_obj['as_country'] = locale_get_display_region('-'.$org_response_obj->data[0]->country, 'de');
+  }
+  else{
+    $ret_obj['as_country'] = '';
+  }
+  $ret_obj['as_state'] = $org_response_obj->data[0]->state;
+  $ret_obj['as_zip'] = $org_response_obj->data[0]->zipcode;
+  $ret_obj['as_city'] = $org_response_obj->data[0]->city;
+  $ret_obj['as_street'] = $org_response_obj->data[0]->address1;
 
   print_r(json_encode($ret_obj));
 }
@@ -60,4 +70,3 @@ function get_web_page($url) {
   return $content;
 }
 ?>
-

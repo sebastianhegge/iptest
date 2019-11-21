@@ -49,47 +49,69 @@ function format_isp(data){
   else{
     isp = data.isp;
   }
+  if(present(data.zip)){
+    if(isp.substr(-5) != '<br/>'){
+      isp += '<br/>';
+    }
+    isp += data.zip;
+  }
+  if(present(data.city)){
+    if(present(data.zip)){
+      isp += ' ';
+    }
+    isp += data.city;
+  }
+  if(present(data.country)){
+    if(isp.substr(-5) != '<br/>'){
+      isp += '<br/>';
+    }
+    isp += data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">';
+  }
   return isp;
 }
 
 function format_as(data){
   as = '';
   if(present(data.as_number)){
-    as += data.as_number;
+    as += '#' + data.as_number;
   }
   if(present(data.as_name)){
     if(present(data.as_number)){
-      as += '<br/>';
+      as += ', ';
     }
     as += data.as_name;
   }
   if(present(data.as_number)){
-    if(present(data.as_number) || present(data.as_name)){
+    if(as.substr(-5) != '<br/>'){
       as += '<br/>';
     }
     as += data.as_organisation;
   }
-  return as;
-}
-
-function format_address(data){
-  address = '';
-  if(present(data.street)){
-    address += data.street + '<br/>';
-  }
-  if(present(data.zip)){
-    address += data.zip;
-  }
-  if(present(data.city)){
-    if(present(data.zip)){
-      address += ' ';
+  if(present(data.as_street)){
+    if(as.substr(-5) != '<br/>'){
+      as += '<br/>';
     }
-    address += data.city + '<br/>';
+    as += data.as_street;
   }
-  if(present(data.country)){
-    address += data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">';
+  if(present(data.as_zip)){
+    if(as.substr(-5) != '<br/>'){
+      as += '<br/>';
+    }
+    as += data.as_zip;
   }
-  return address;
+  if(present(data.as_city)){
+    if(present(data.as_zip)){
+      as += ' ';
+    }
+    as += data.as_city;
+  }
+  if(present(data.as_country)){
+    if(as.substr(-5) != '<br/>'){
+      as += '<br/>';
+    }
+    as += data.as_country + ' <img src="flags/' + data.as_country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">';
+  }
+  return as;
 }
 
 function present(val){
@@ -112,7 +134,6 @@ $(document).ready(function(){
       $('#content-ipv4-ip-network').text('-');
       $('#content-ipv4-isp').text('-');
       $('#content-ipv4-as').text('-');
-      $('#content-ipv4-address').text('-');
     }
   });
 
@@ -131,7 +152,6 @@ $(document).ready(function(){
       $('#content-ipv6-ip-network').text('-');
       $('#content-ipv6-isp').text('-');
       $('#content-ipv6-as').text('-');
-      $('#content-ipv6-address').text('-');
     }
   });
 
@@ -187,7 +207,6 @@ $(document).ready(function(){
           $('#content-ipv4-ip-network').text(data.ip_network);
           $('#content-ipv4-isp').html(format_isp(data));
           $('#content-ipv4-as').html(format_as(data));
-          $('#content-ipv4-address').html(format_address(data));
           /* $('#content-ipv4-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">'); */
           $('#map-ipv4').addClass('map-height');
           init_map_ipv4(data.lat, data.lon);
@@ -196,7 +215,6 @@ $(document).ready(function(){
           $('#content-ipv4-ip-network').text('-');
           $('#content-ipv4-isp').text('-');
           $('#content-ipv4-as').text('-');
-          $('#content-ipv4-address').text('-');
         }
       }
     });
@@ -212,7 +230,6 @@ $(document).ready(function(){
           $('#content-ipv6-ip-network').text(data.ip_network);
           $('#content-ipv6-isp').html(format_isp(data));
           $('#content-ipv6-as').html(format_as(data));
-          $('#content-ipv6-address').html(format_address(data));
           /* $('#content-ipv6-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">'); */
           $('#map-ipv6').addClass('map-height');
           init_map_ipv6(data.lat, data.lon);
@@ -221,7 +238,6 @@ $(document).ready(function(){
           $('#content-ipv6-ip-network').text('-');
           $('#content-ipv6-isp').text('-');
           $('#content-ipv6-as').text('-');
-          $('#content-ipv6-address').text('-');
         }
       }
     });
