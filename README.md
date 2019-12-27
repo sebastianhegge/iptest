@@ -17,9 +17,8 @@ See a demo at [ipte.st](http://ipte.st).
 * IPv4 and IPv6 Address
 * Hostname (IPv4 and IPv6)
 * Associated AS Network (IPv4 and IPv6)
-* Resulting suspected internet service provider (IPv4 and IPv6)
+* Resulting suspected internet service provider incl. postal address (IPv4 and IPv6)
 * AS-informations (number, name and company), (IPv4 and IPv6)
-* Postal address (IPv4 and IPv6)
 * Google Maps Map for postal address (IPv4 and IPv6)
 
 ## Requirements
