@@ -22,22 +22,39 @@ function init_map_ipv6(lat, lng) {
 }
 
 function translate_link_type(link_type){
-  link_types = {
-    'Ethernet or modem': 'Netzwerk oder Modem (vermutlich)',
-    'PPPoE': 'PPPoE (vermutlich)',
-    'L2TP': 'L2TP oder PPPoE (vermutlich)',
-    'GIF': 'GIF (vermutlich)',
-    'Probably IPsec or other VPN': 'IPsec oder anderes VPN (vermutlich)',
-    'generic tunnel or VPN': 'Generischer Tunnel, VPN oder LTE (vermutlich)',
-    'IPSec or GRE': 'IPSec oder Generic Routing Encapsulation (vermutlich)',
-    'IPIP or SIT': 'IPIP oder SIT (vermutlich)',
-    '': '-'
+  var lang = navigator.language || navigator.userLanguage;
+  lang = lang.substr(0,2);
+  if(lang == 'de'){
+    var link_types = {
+      'Ethernet or modem': 'Netzwerk oder Modem',
+      'L2TP': 'L2TP oder PPPoE',
+      'Probably IPsec or other VPN': 'IPsec oder anderes VPN',
+      'generic tunnel or VPN': 'Generischer Tunnel, VPN oder LTE',
+      'IPSec or GRE': 'IPSec oder Generic Routing Encapsulation',
+      'IPIP or SIT': 'IPIP oder SIT',
+      '': '-'
+    }
+  } else {
+    var link_types = {
+      'Ethernet or modem': 'Netzwerk or Modem',
+      'L2TP': 'L2TP or PPPoE',
+      'Probably IPsec or other VPN': 'IPsec or other VPN',
+      'generic tunnel or VPN': 'Generic Tunnel, VPN or LTE',
+      'IPSec or GRE': 'IPSec or Generic Routing Encapsulation',
+      '': '-'
+    }
   }
+  if(lang == 'de'){
+    var probably = ' (vermutlich)';
+  } else {
+    var probably = ' (probably)';
+  }
+
   if (link_types[link_type] == undefined){
-    return link_type + ' (vermutlich)';
+    return link_type + probably;
   }
   else{
-    return link_types[link_type];
+    return link_types[link_type] + probably;
   }
 }
 
@@ -159,7 +176,6 @@ $(document).ready(function(){
   });
 
   get_dns_data();
-  get_local_ip();
   get_fingerprint();
 
   function get_ipv4_host() {
@@ -309,49 +325,5 @@ $(document).ready(function(){
         $('#content-link-type').text('-');
       }
     });
-  };
-
-  function get_local_ip() {
-    var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
-    if (RTCPeerConnection) (function () {
-      var rtc = new RTCPeerConnection({iceServers:[]});
-      if (1 || window.mozRTCPeerConnection) {
-        rtc.createDataChannel('', {reliable:false});
-      };
-
-      rtc.onicecandidate = function (evt) {
-        if (evt.candidate) grepSDP('a='+evt.candidate.candidate);
-      };
-      rtc.createOffer(function (offerDesc) {
-        grepSDP(offerDesc.sdp);
-        rtc.setLocalDescription(offerDesc);
-      }, function (e) { console.warn('offer failed', e); });
-
-      var addrs = [];
-      function updateDisplay(newAddr) {
-        if (newAddr != '0.0.0.0' && newAddr.indexOf('-') == -1 && addrs.indexOf(newAddr) == -1) {
-          addrs.push(newAddr);
-        }
-        $('#content-local-ip').text(addrs.join(', ') || '-');
-      }
-
-      function grepSDP(sdp) {
-        var hosts = [];
-        sdp.split('\r\n').forEach(function (line) {
-          if (~line.indexOf('a=candidate')) {
-            var parts = line.split(' '),
-              addr = parts[4],
-              type = parts[7];
-            if (type === 'host') updateDisplay(addr);
-          } else if (~line.indexOf('c=')) {
-            var parts = line.split(' '),
-              addr = parts[2];
-            updateDisplay(addr);
-          }
-        });
-      }
-    })(); else {
-      $('#content-local-ip').text('-');
-    }
   };
 });

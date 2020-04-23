@@ -16,6 +16,11 @@ $browscap_translation = [
   ]
 ];
 
+$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+if($lang != 'de'){
+  $lang = 'en';
+}
+
 if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'curl')!==false){
   print($_SERVER['REMOTE_ADDR']."\n");
   if($_SERVER['REMOTE_ADDR'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])){
@@ -25,7 +30,7 @@ if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'curl')!==false){
 else {
 ?>
 <!doctype html>
-<html lang="de">
+<html lang="<?php print($lang); ?>">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -51,7 +56,7 @@ else {
               <table class="table table-striped">
                 <tbody>
                   <tr>
-                    <th scope="row">Verbindung über:</th>
+                    <th scope="row"><?php print(($lang == 'de')?('Verbindung über'):('Connection via')); ?>:</th>
                     <td id="content-ip-version"><?php if(strpos($_SERVER['REMOTE_ADDR'], ":")){print('IPv6');} else{print('IPv4');} ?></td>
                   </tr>
                   <tr>
@@ -63,15 +68,11 @@ else {
                     <td id="content-edns"><img src="loader.gif" width="16" height="16" id="loader-dns"></td>
                   </tr>
                   <tr>
-                    <th scope="row">Lokale IPs:</th>
-                    <td id="content-local-ip"><img src="loader.gif" width="16" height="16" id="loader-local-ip"></td>
-                  </tr>
-                  <tr>
                     <th scope="row">MTU:</th>
                     <td id="content-mtu"><img src="loader.gif" width="16" height="16" id="loader-mtu"></td>
                   </tr>
                   <tr>
-                    <th scope="row">Anschluss-Typ:</th>
+                    <th scope="row"><?php print(($lang == 'de')?('Anschluss-Typ'):('Connection type')); ?>:</th>
                     <td id="content-link-type"><img src="loader.gif" width="16" height="16" id="loader-link-type"></td>
                   </tr>
                   <tr>
@@ -79,16 +80,20 @@ else {
                     <td id="content-user-agent"><small><?php print($_SERVER['HTTP_USER_AGENT']); ?></small></td>
                   </tr>
                   <tr>
-                    <th scope="row">Geräte-Typ:</th>
-                    <td id="content-os"><?php print($browscap_translation['device_type'][$browscap['device_type']]); ?></td>
+                    <th scope="row"><?php print(($lang == 'de')?('Geräte-Typ'):('Device type')); ?>:</th>
+                    <td id="content-os"><?php print(($lang == 'de')?($browscap_translation['device_type'][$browscap['device_type']]):($browscap['device_type'])); ?></td>
                   </tr>
                   <tr>
-                    <th scope="row">Betriebssystem:</th>
+                    <th scope="row"><?php print(($lang == 'de')?('Betriebssystem'):('Operating system')); ?>:</th>
                     <td id="content-os"><?php print($browscap['platform']); ?></td>
                   </tr>
                   <tr>
                     <th scope="row">Browser:</th>
                     <td id="content-os"><?php print($browscap['browser']); ?></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><?php print(($lang == 'de')?('Sprache'):('Language')); ?>:</th>
+                    <td id="content-os"><?php print(locale_get_display_language(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))); ?> <img src="flags/<?php print(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)); ?>.svg" width="20" height="16" style="margin-bottom: 2px;"></td>
                   </tr>
                 </tbody>
               </table>
@@ -112,7 +117,7 @@ else {
                     <td id="content-ipv4-hostname"><img src="loader.gif" width="16" height="16" id="loader-ipv4-hostname"></td>
                   </tr>
                   <tr>
-                    <th scope="row">IP-Netz:</th>
+                    <th scope="row"><?php print(($lang == 'de')?('IP-Netz'):('IP network')); ?>:</th>
                     <td id="content-ipv4-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv4-ip"></td>
                   </tr>
                   <tr>
@@ -147,7 +152,7 @@ else {
                     <td id="content-ipv6-hostname"><img src="loader.gif" width="16" height="16" id="loader-ipv6-hostname"></td>
                   </tr>
                   <tr>
-                    <th scope="row">IP-Netz:</th>
+                    <th scope="row"><?php print(($lang == 'de')?('IP-Netz'):('IP network')); ?>:</th>
                     <td id="content-ipv6-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv6-ip"></td>
                   </tr>
                   <tr>
@@ -168,7 +173,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank">Impressum & Datenschutz</a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank">Source on GitHub</a> &middot; v2.1
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v2.2
             </div>
           </div>
         </div>
