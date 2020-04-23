@@ -36,7 +36,7 @@ function translate_link_type(link_type){
     }
   } else {
     var link_types = {
-      'Ethernet or modem': 'Netzwerk or Modem',
+      'Ethernet or modem': 'Ethernet or Modem',
       'L2TP': 'L2TP or PPPoE',
       'Probably IPsec or other VPN': 'IPsec or other VPN',
       'generic tunnel or VPN': 'Generic Tunnel, VPN or LTE',
