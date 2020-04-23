@@ -2,9 +2,14 @@
 header('Access-Control-Allow-Origin: *');
 header('Content-type:application/json;charset=utf-8');
 
+$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+if($lang != 'de'){
+  $lang = 'en';
+}
+
 if(isset($_GET['ip'])){
   $ip = $_GET['ip'];
-  $response = get_web_page('http://ip-api.com/json/'.$ip.'?fields=19187&lang=de');
+  $response = get_web_page('http://ip-api.com/json/'.$ip.'?fields=19187&lang='.$lang);
   print_r($response);
 }
 else {
@@ -20,7 +25,7 @@ else {
   $ret_obj['country_code'] = (String)getenv('MM_COUNTRY_CODE_CITY_DB');
   $ret_obj['status'] = 'success';
   $ret_obj['ip_network'] = (String)getenv('MM_ASN_DB_NETWORK');
-  $ret_obj['country'] = locale_get_display_region('-'.$ret_obj['country_code'], 'de');
+  $ret_obj['country'] = locale_get_display_region('-'.$ret_obj['country_code'], $lang);
   $ret_obj['city'] = (String)getenv('MM_CITY_NAME');
   $ret_obj['zip'] = '';
   $ret_obj['lat'] = (Float)getenv('MM_LATITUDE');
@@ -33,7 +38,7 @@ else {
   $ret_obj['as_organisation'] = $org_response_obj->data[0]->name;
   $ret_obj['as_country_code'] = $org_response_obj->data[0]->country;
   if(isset($org_response_obj->data[0]->country) && strlen($org_response_obj->data[0]->country) > 0){
-    $ret_obj['as_country'] = locale_get_display_region('-'.$org_response_obj->data[0]->country, 'de');
+    $ret_obj['as_country'] = locale_get_display_region('-'.$org_response_obj->data[0]->country, $lang);
   }
   else{
     $ret_obj['as_country'] = '';

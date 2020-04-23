@@ -20,6 +20,12 @@ $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 if($lang != 'de'){
   $lang = 'en';
 }
+if($lang == substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)){
+  $language_string = locale_get_display_language(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+}
+else{
+  $language_string = locale_get_display_language(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))." (".locale_get_display_language(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), $lang).")";
+}
 
 if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'curl')!==false){
   print($_SERVER['REMOTE_ADDR']."\n");
@@ -81,7 +87,7 @@ else {
                   </tr>
                   <tr>
                     <th scope="row"><?php print(($lang == 'de')?('Geräte-Typ'):('Device type')); ?>:</th>
-                    <td id="content-os"><?php print(($lang == 'de')?($browscap_translation['device_type'][$browscap['device_type']]):($browscap['device_type'])); ?></td>
+                    <td id="content-device-type"><?php print(($lang == 'de')?($browscap_translation['device_type'][$browscap['device_type']]):($browscap['device_type'])); ?></td>
                   </tr>
                   <tr>
                     <th scope="row"><?php print(($lang == 'de')?('Betriebssystem'):('Operating system')); ?>:</th>
@@ -89,11 +95,11 @@ else {
                   </tr>
                   <tr>
                     <th scope="row">Browser:</th>
-                    <td id="content-os"><?php print($browscap['browser']); ?></td>
+                    <td id="content-browser"><?php print($browscap['browser']); ?></td>
                   </tr>
                   <tr>
                     <th scope="row"><?php print(($lang == 'de')?('Sprache'):('Language')); ?>:</th>
-                    <td id="content-os"><?php print(locale_get_display_language(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))); ?> <img src="flags/<?php print(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)); ?>.svg" width="20" height="16" style="margin-bottom: 2px;"></td>
+                    <td id="content-language"><?php print($language_string); ?></td>
                   </tr>
                 </tbody>
               </table>
@@ -173,7 +179,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v2.2
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v2.2.1
             </div>
           </div>
         </div>

@@ -263,12 +263,17 @@ $(document).ready(function(){
   };
 
   function get_dns_data() {
+    var lang = navigator.language || navigator.userLanguage;
+    lang = lang.substr(0,2);
+    if(lang != 'de'){
+      lang == 'en';
+    }
     var random_string = '';
     for (i = 0; i < 32; i++) {
       random_string += '0123456789abcdefghijklmnopqrstuvwxyz'[Math.round(Math.random() * 35)]
     }
     $.ajax({
-      url: location.protocol + '//' + random_string + '.edns.ip-api.com/json?lang=de',
+      url: location.protocol + '//' + random_string + '.edns.ip-api.com/json?lang=' + lang,
       type: 'GET',
       crossDomain: true,
       success: function(data){
