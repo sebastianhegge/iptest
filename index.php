@@ -44,7 +44,7 @@ else {
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 
-    <script src="jquery/jquery-3.3.1.min.js"></script>
+    <script src="jquery/jquery-3.5.0.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
 
@@ -179,7 +179,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v2.2.2
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v2.3
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 # iptest
 
-A small tool to test several IP settings with the help of Apache Mod MaxMind, [peeringdb.com](https://www.peeringdb.com/apidocs/) and [ip-api.com](http://ip-api.com).  
+A small tool to test several IP settings with the help of Apache Mod MaxMind, [peeringdb.com](https://www.peeringdb.com/apidocs/) and [ip-api.com](http://ip-api.com).
 See a demo at [ipte.st](http://ipte.st).
 
 ## These values are determined
@@ -39,8 +39,8 @@ See a demo at [ipte.st](http://ipte.st).
 * copy `config.example.php` to `config.php` and include your Google Maps API Key
 
 ## Sources
-* [jQuery 3.3.1 min](https://code.jquery.com/jquery-3.3.1.min.js) in `/jquery`
-* [Bootstrap 4.0](https://getbootstrap.com/docs/4.0/getting-started/download/) in `/bootstrap`
+* [jQuery 3.5.0 min](https://code.jquery.com/jquery-3.5.0.min.js) in `/jquery`
+* [Bootstrap 4.1](https://getbootstrap.com/docs/4.1/getting-started/download/) in `/bootstrap`
 * [flag-icon-css project](https://github.com/lipis/flag-icon-css/archive/master.zip) in `/flags` (the content of `/flags/4x3`)
 * the API service of [ip-api.com](http://ip-api.com)
 * the API service of [peeringdb.com](https://www.peeringdb.com/apidocs/)
