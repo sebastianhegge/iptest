@@ -50,12 +50,17 @@ function translate_link_type(link_type){
     var probably = ' (probably)';
   }
 
-  if (link_types[link_type] == undefined){
+  if (link_type == '???'){
+    return '-';
+  } else if (link_types[link_type] == undefined){
     return link_type + probably;
-  }
-  else{
+  }  else{
     return link_types[link_type] + probably;
   }
+}
+
+function format_dns(ip, data){
+  return ip + '<br/>' + data.isp + '<br/>' + data.country + ' <img src="flags/' + data.countryCode.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">';
 }
 
 function format_isp(data){
@@ -146,11 +151,15 @@ $(document).ready(function(){
     success: function(data){
       $('#content-ipv4-ip').text(data);
       get_ipv4_host();
+      get_ipv4_network();
       get_ipv4_data();
     },
     error: function(error){
       $('#content-ipv4-ip').text('-');
       $('#content-ipv4-hostname').text('-');
+      $('#content-ipv4-mtu').text('-');
+      $('#content-ipv4-link-type').text('-');
+      $('#content-ipv4-distance').text('-');
       $('#content-ipv4-ip-network').text('-');
       $('#content-ipv4-isp').text('-');
       $('#content-ipv4-as').text('-');
@@ -164,11 +173,15 @@ $(document).ready(function(){
     success: function(data){
       $('#content-ipv6-ip').html(data.replace(/:/g, ':<wbr>'));
       get_ipv6_host();
+      get_ipv6_network();
       get_ipv6_data();
     },
     error: function(error){
       $('#content-ipv6-ip').text('-');
       $('#content-ipv6-hostname').text('-');
+      $('#content-ipv6-mtu').text('-');
+      $('#content-ipv6-link-type').text('-');
+      $('#content-ipv6-distance').text('-');
       $('#content-ipv6-ip-network').text('-');
       $('#content-ipv6-isp').text('-');
       $('#content-ipv6-as').text('-');
@@ -176,7 +189,6 @@ $(document).ready(function(){
   });
 
   get_dns_data();
-  get_fingerprint();
 
   function get_ipv4_host() {
     $.ajax({
@@ -226,7 +238,6 @@ $(document).ready(function(){
           $('#content-ipv4-ip-network').text(data.ip_network);
           $('#content-ipv4-isp').html(format_isp(data));
           $('#content-ipv4-as').html(format_as(data));
-          /* $('#content-ipv4-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">'); */
           $('#map-ipv4').addClass('map-height');
           init_map_ipv4(data.lat, data.lon);
         }
@@ -249,7 +260,6 @@ $(document).ready(function(){
           $('#content-ipv6-ip-network').text(data.ip_network);
           $('#content-ipv6-isp').html(format_isp(data));
           $('#content-ipv6-as').html(format_as(data));
-          /* $('#content-ipv6-country').html(data.zip + ' ' + data.city + ', ' + data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">'); */
           $('#map-ipv6').addClass('map-height');
           init_map_ipv6(data.lat, data.lon);
         }
@@ -283,7 +293,7 @@ $(document).ready(function(){
           crossDomain: true,
           success: function(data2){
             if (data2 && data2.status && data2.status == 'success') {
-              $('#content-dns').html(data.dns.ip + ' (' + data2.isp + ' <img src="flags/' + data2.countryCode.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">)');
+              $('#content-dns').html(format_dns(data.dns.ip, data2));
             }
             else {
               $('#content-dns').text('-');
@@ -297,7 +307,7 @@ $(document).ready(function(){
             crossDomain: true,
             success: function(data3){
               if (data3 && data3.status && data3.status == 'success') {
-                $('#content-edns').html(data.edns.ip + ' (' + data3.isp + ' <img src="flags/' + data3.countryCode.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">)');
+                $('#content-edns').html(format_dns(data.edns.ip, data3));
               }
               else {
                 $('#content-edns').text('-');
@@ -316,18 +326,38 @@ $(document).ready(function(){
     });
   };
 
-  function get_fingerprint(){
+  function get_ipv4_network(){
     $.ajax({
-      url: 'http://fp.ip-api.com/json',
+      url: location.protocol + '//ipv4.' + location.host + '/network.php',
       type: 'GET',
       crossDomain: true,
       success: function(data){
-        $('#content-mtu').text(data.link_mtu);
-        $('#content-link-type').text(translate_link_type(data.link_type));
+        $('#content-ipv4-mtu').text(data.mtu);
+        $('#content-ipv4-link-type').text(translate_link_type(data.link_type));
+        $('#content-ipv4-distance').text(data.distance);
       },
       error: function(error){
-        $('#content-mtu').text('-');
-        $('#content-link-type').text('-');
+        $('#content-ipv4-mtu').text('-');
+        $('#content-ipv4-link-type').text('-');
+        $('#content-ipv4-distance').text('-');
+      }
+    });
+  };
+
+  function get_ipv6_network(){
+    $.ajax({
+      url: location.protocol + '//ipv6.' + location.host + '/network.php',
+      type: 'GET',
+      crossDomain: true,
+      success: function(data){
+        $('#content-ipv6-mtu').text(data.mtu);
+        $('#content-ipv6-link-type').text(translate_link_type(data.link_type));
+        $('#content-ipv6-distance').text(data.distance);
+      },
+      error: function(error){
+        $('#content-ipv6-mtu').text('-');
+        $('#content-ipv6-link-type').text('-');
+        $('#content-ipv6-distance').text('-');
       }
     });
   };

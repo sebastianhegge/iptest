@@ -6,16 +6,16 @@ See a demo at [ipte.st](http://ipte.st).
 ## These values are determined
 * Current connection (IPv4 or IPv6)
 * DNS-Server (IP, Provider and Country)
-* EDNS-Subnetz (Transmitted to DNS-Server)
-* Local IP-Adresses (IPv4 and IPv6, only working in Firefox)
-* Network-MTU
-* Resulting suspected connection type
+* EDNS-Subnetz (Transmitted to DNS-Server (IP, Provider and Country))
 * User agent
 * Device type
 * Operating system
 * Browser
 * IPv4 and IPv6 Address
 * Hostname (IPv4 and IPv6)
+* Network-MTU (IPv4 or IPv6)
+* Resulting suspected connection type (IPv4 or IPv6)
+* Hop amount from Client to Server (IPv4 or IPv6)
 * Associated AS Network (IPv4 and IPv6)
 * Resulting suspected internet service provider incl. postal address (IPv4 and IPv6)
 * AS-informations (number, name and company), (IPv4 and IPv6)
@@ -33,6 +33,7 @@ See a demo at [ipte.st](http://ipte.st).
   * ipv4 subdomain (ipv4.DOMAIN.de), reachable only via IPv4 (only an A Record)
   * ipv6 subdomain (ipv6.DOMAIN.de), reachable only via IPv6 (only an AAAA Record)
 * Google Maps API Key
+* p0f-mtu running on same Server [GitHub](https://github.com/ValdikSS/p0f-mtu) / [README](README-p0f-mtu.md)
 
 ## Install
 * [download](https://github.com/sebastianhegge/iptest/archive/master.zip) or clone the project

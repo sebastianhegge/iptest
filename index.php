@@ -74,14 +74,6 @@ else {
                     <td id="content-edns"><img src="loader.gif" width="16" height="16" id="loader-dns"></td>
                   </tr>
                   <tr>
-                    <th scope="row">MTU:</th>
-                    <td id="content-mtu"><img src="loader.gif" width="16" height="16" id="loader-mtu"></td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><?php print(($lang == 'de')?('Anschluss-Typ'):('Connection type')); ?>:</th>
-                    <td id="content-link-type"><img src="loader.gif" width="16" height="16" id="loader-link-type"></td>
-                  </tr>
-                  <tr>
                     <th scope="row">User-Agent:</th>
                     <td id="content-user-agent"><small><?php print($_SERVER['HTTP_USER_AGENT']); ?></small></td>
                   </tr>
@@ -123,8 +115,20 @@ else {
                     <td id="content-ipv4-hostname"><img src="loader.gif" width="16" height="16" id="loader-ipv4-hostname"></td>
                   </tr>
                   <tr>
+                    <th scope="row">MTU:</th>
+                    <td id="content-ipv4-mtu"><img src="loader.gif" width="16" height="16" id="loader-ipv4-mtu"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><?php print(($lang == 'de')?('Anschluss-Typ'):('Connection type')); ?>:</th>
+                    <td id="content-ipv4-link-type"><img src="loader.gif" width="16" height="16" id="loader-ipv4-link-type"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><?php print(($lang == 'de')?('Hop-Distanz'):('Hop distance')); ?>:</th>
+                    <td id="content-ipv4-distance"><img src="loader.gif" width="16" height="16" id="loader-ipv4-distance"></td>
+                  </tr>
+                  <tr>
                     <th scope="row"><?php print(($lang == 'de')?('IP-Netz'):('IP network')); ?>:</th>
-                    <td id="content-ipv4-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv4-ip"></td>
+                    <td id="content-ipv4-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv4-ip-network"></td>
                   </tr>
                   <tr>
                     <th scope="row">ISP:</th>
@@ -158,8 +162,20 @@ else {
                     <td id="content-ipv6-hostname"><img src="loader.gif" width="16" height="16" id="loader-ipv6-hostname"></td>
                   </tr>
                   <tr>
+                    <th scope="row">MTU:</th>
+                    <td id="content-ipv6-mtu"><img src="loader.gif" width="16" height="16" id="loader-ipv6-mtu"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><?php print(($lang == 'de')?('Anschluss-Typ'):('Connection type')); ?>:</th>
+                    <td id="content-ipv6-link-type"><img src="loader.gif" width="16" height="16" id="loader-ipv6-link-type"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><?php print(($lang == 'de')?('Hop-Distanz'):('Hop distance')); ?>:</th>
+                    <td id="content-ipv6-distance"><img src="loader.gif" width="16" height="16" id="loader-ipv6-distance"></td>
+                  </tr>
+                  <tr>
                     <th scope="row"><?php print(($lang == 'de')?('IP-Netz'):('IP network')); ?>:</th>
-                    <td id="content-ipv6-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv6-ip"></td>
+                    <td id="content-ipv6-ip-network"><img src="loader.gif" width="16" height="16" id="loader-ipv6-ip-network"></td>
                   </tr>
                   <tr>
                     <th scope="row">ISP:</th>
@@ -179,7 +195,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v2.3
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v3.0
             </div>
           </div>
         </div>
