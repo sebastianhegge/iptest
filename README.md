@@ -27,6 +27,7 @@ See a demo at [ipte.st](http://ipte.st).
   * PHP
   * PHP Curl extension
   * PHP Browscap extension [website](https://browscap.org) / [download lite version](https://browscap.org/stream?q=Lite_PHP_BrowsCapINI)
+  * Apache Module RemoteIPHeader configured VHOSTs with `RemoteIPHeader X-Client-IP`
   * Apache Module MaxMind DB [GitHub](https://github.com/maxmind/mod_maxminddb) / [README](README-install-apache-mod-maxmind.md)
 * one webserver vhost with:
   * production-domain (for example DOMAIN.de), reachable via IPv4 and IPv6 (with an A Record and an AAAA Record)

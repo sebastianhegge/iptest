@@ -9,3 +9,11 @@ cd tools
 make
 # you need "p0f-client"
 ```
+
+```bash
+# p0f is startet via:
+/path/to/p0f -d -f /path/to/p0f.fp -s '/var/run/p0f.sock'
+
+# p0f-client is used via, must be useable from PHP (see network.php):
+/path/to/p0f-client /var/run/p0f.sock <IP-ADDRESS>
+```

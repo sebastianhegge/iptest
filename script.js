@@ -60,7 +60,7 @@ function translate_link_type(link_type){
 }
 
 function format_dns(ip, data){
-  return ip + '<br/>' + data.isp + '<br/>' + data.country + ' <img src="flags/' + data.countryCode.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">';
+  return ip + '<br/>' + data.isp + '<br/>' + data.country + ' <img src="flags/' + data.country_code.toLowerCase() + '.svg" width="20" height="16" style="margin-bottom: 2px;">';
 }
 
 function format_isp(data){
@@ -288,9 +288,12 @@ $(document).ready(function(){
       crossDomain: true,
       success: function(data){
         $.ajax({
-          url: location.protocol + '//' + location.host + '/geo.php?ip=' + data.dns.ip,
+          url: location.protocol + '//' + location.host + '/geo.php',
           type: 'GET',
           crossDomain: true,
+          headers: {
+            'X-Client-IP': data.dns.ip
+          },
           success: function(data2){
             if (data2 && data2.status && data2.status == 'success') {
               $('#content-dns').html(format_dns(data.dns.ip, data2));
@@ -302,9 +305,12 @@ $(document).ready(function(){
         });
         if(data && data.edns){
           $.ajax({
-            url: location.protocol + '//' + location.host + '/geo.php?ip=' + data.edns.ip,
+            url: location.protocol + '//' + location.host + '/geo.php',
             type: 'GET',
             crossDomain: true,
+            headers: {
+              'X-Client-IP': data.edns.ip
+            },
             success: function(data3){
               if (data3 && data3.status && data3.status == 'success') {
                 $('#content-edns').html(format_dns(data.edns.ip, data3));
