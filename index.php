@@ -195,7 +195,7 @@ else {
         <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card mt-4">
             <div class="card-header card-header-no-border text-center">
-              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v3.0
+              &copy; Sebastian Hegge &middot; <a href="https://heg.ge/impressum" target="_blank"><?php print(($lang == 'de')?('Impressum & Datenschutz'):('Imprint & Privacy policy')); ?></a> &middot; <a href="https://github.com/sebastianhegge/iptest" target="_blank"><?php print(($lang == 'de')?('Quellcode auf GitHub'):('Source on GitHub')); ?></a> &middot; v3.1
             </div>
           </div>
         </div>
