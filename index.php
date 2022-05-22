@@ -27,10 +27,48 @@ else{
   $language_string = locale_get_display_language(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2))." (".locale_get_display_language(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), $lang).")";
 }
 
-if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'curl')!==false){
-  print($_SERVER['REMOTE_ADDR']."\n");
+if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'curl')!==false || strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'httpie')!==false){
+  print("ip:           ".$_SERVER['REMOTE_ADDR']."\n");
   if($_SERVER['REMOTE_ADDR'] != gethostbyaddr($_SERVER['REMOTE_ADDR'])){
-    print(gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n");
+    print("hostname:     ".gethostbyaddr($_SERVER['REMOTE_ADDR'])."\n");
+  }
+  print('network:      '.(String)getenv('MM_ASN_DB_NETWORK')."\n");
+  if((String)getenv('MM_ASN') != ''){
+    print('asn:          '.(String)getenv('MM_ASN')."\n");
+  }
+
+  $a = shell_exec('/var/www/p0f/p0f-client /var/run/p0f.sock '.$_SERVER['REMOTE_ADDR']);
+  $b = explode("\n", trim($a));
+  $data = Array();
+  foreach($b as $current){
+    $current_array = explode('=', $current);
+    $data[trim($current_array[0])] = trim($current_array[1]);
+  }
+  $isp = '';
+  if((String)getenv('MM_AS_ORG') != ''){
+    $isp = $isp.(String)getenv('MM_AS_ORG');
+  }
+  if((String)getenv('MM_CITY_NAME') != ''){
+    if($isp != ''){
+      $isp = $isp.', ';
+    }
+    $isp = $isp.(String)getenv('MM_CITY_NAME');
+  }
+  if((String)getenv('MM_COUNTRY_CODE_CITY_DB') != ''){
+    if($isp != ''){
+      $isp = $isp.', ';
+    }
+    $isp = $isp.locale_get_display_region('-'.(String)getenv('MM_COUNTRY_CODE_CITY_DB'), $lang);
+  }
+  if($isp != ''){
+    print('isp:          '.$isp."\n");
+  }
+
+  if($data['MTU'] != ''){
+    print('mtu:          '.$data['MTU']."\n");
+  }
+  if($data['MTU'] != ''){
+    print('hop-distance: '.$data['Distance']."\n");
   }
 }
 else {
