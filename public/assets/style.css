@@ -1,0 +1,20 @@
+#map-ipv4, #map-ipv6 {
+  box-sizing: content-box;
+}
+.map-height {
+  height: 300px;
+}
+.card-header-no-border {
+  border-bottom: none;
+}
+.table {
+  margin-bottom: auto;
+}
+.card-body {
+  padding: unset;
+}
+.flag{
+  width: 20px;
+  height: 16px;
+  margin-bottom: 2px;
+}
