@@ -27,6 +27,7 @@ $user_agent_data = json_decode(get_pretty_user_agent_data($_SERVER['HTTP_USER_AG
 $ip_api_data     = json_decode(get_pretty_ip_api_data($ip));
 $p0f_data        = json_decode(get_pretty_p0f_data($ip));
 $whois_data      = json_decode(get_pretty_whois_data($ip));
+
 if(isset($ip_api_data->as_number)){
   $peering_db_data = json_decode(get_pretty_peering_db_data($ip_api_data->as_number));
 } else {

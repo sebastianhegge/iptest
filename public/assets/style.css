@@ -1,6 +1,9 @@
 #map-ipv4, #map-ipv6 {
   box-sizing: content-box;
 }
+.map-na-message {
+  padding: 8px;
+}
 .map-height {
   height: 300px;
 }

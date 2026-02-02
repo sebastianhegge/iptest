@@ -22,8 +22,9 @@ function get_peering_db_data_from_db($asn){
 }
 
 function get_peering_db_data_from_api($asn){
-  $asn_data = json_decode(get_url_content('https://peeringdb.com/api/net?asn='.$asn));
+  $asn_data = json_decode(get_url_content('https://www.peeringdb.com/api/net?asn='.$asn));
   $org_data = json_decode(get_url_content('https://www.peeringdb.com/api/org/'.$asn_data->data[0]->org_id));
+
   $data = Array();
   $data['asn'] = $asn_data;
   $data['org'] = $org_data;
@@ -36,8 +37,9 @@ function get_peering_db_data($asn){
     return $peering_db_data_from_db;
   } else {
     $peering_db_data_from_api = get_peering_db_data_from_api($asn);
+    $peering_db_data_from_api_decoded = json_decode($peering_db_data_from_api);
 
-    if(isset($peering_db_data_from_api) && $peering_db_data_from_api != NULL && $peering_db_data_from_api != ''){
+    if(isset($peering_db_data_from_api_decoded->asn) && $peering_db_data_from_api_decoded->asn != NULL && $peering_db_data_from_api_decoded->asn != ''){
       $peering_db_data = $GLOBALS['db']->prepare("INSERT INTO `peering_db` (asn, result) VALUES (:asn, :result)");
       $peering_db_data->bindParam(':asn', $asn);
       $peering_db_data->bindParam(':result', $peering_db_data_from_api);
@@ -66,11 +68,21 @@ function get_pretty_peering_db_data($asn){
     return json_encode($pretty_array);
   }
 
-  foreach ($data->org->data[0]->net_set as $item) {
-    if ($item->asn == $asn){
-      $net_set = $item;
+  if(
+    isset($data->org->data[0]->net_set) &&
+    is_array($data->org->data[0]->net_set)
+  ){
+    foreach ($data->org->data[0]->net_set as $item) {
+      if ($item->asn == $asn){
+        $net_set = $item;
+      }
     }
   }
+
+#  print('<pre>');
+#  var_dump($data);
+#  print('</pre>');
+#  die();
 
   if(
     isset($data->org->data[0]->address1) &&

@@ -12,11 +12,12 @@ function find_get_parameter(parameter_name){
 const valid_v4_range = string => [...string].every(c => '0123456789. -/'.includes(c));
 const valid_v6_range = string => [...string].every(c => '0123456789abcdef: -/'.includes(c));
 
+var map_service = document.cookie.split('; ').find(row => row.startsWith('MAP_SERVICE' + '='))?.split('=')[1];
 var ipv4_lat;
-var ipv4_lng;
+var ipv4_lon;
 var ipv6_lat;
-var ipv6_lng;
-var maps_ready = false;
+var ipv6_lon;
+var map_service_ready = false;
 
 function lang(){
   if(present(find_get_parameter('lang'))){
@@ -26,52 +27,135 @@ function lang(){
     lang = lang.substr(0,2);
   }
   if(lang != 'de'){
-    lang == 'en';
+    lang = 'en';
   }
   return lang;
 };
 
-function maps_callback(){
-  maps_ready = true;
-  if(present(ipv4_lat) && present(ipv4_lng)){
-    init_map_ipv4();
+function map_service_callback(){
+  map_service_ready = true;
+  if(present(ipv4_lat) && present(ipv4_lon)){
+    init_map('ipv4', ipv4_lat, ipv4_lon);
   }
-  if(present(ipv6_lat) && present(ipv6_lng)){
-    init_map_ipv6();
+  if(present(ipv6_lat) && present(ipv6_lon)){
+    init_map('ipv6', ipv6_lat, ipv6_lon);
   }
 }
 
 function init_map_ipv4(){
-  if(GOOGLE_MAPS_ACTIVE && maps_ready){
+  if(config['openstreetmap']['active'] && map_service == 'openstreetmap'){
     document.getElementById('map-ipv4').classList.add('map-height');
-    var pos = {lat: ipv4_lat, lng: ipv4_lng};
+    var map = L.map('map-ipv4')
+      .setView([ipv4_lat, ipv4_lon], 10);
+    var osm = L.tileLayer('//{s}.' + config['openstreetmap']['domain'] + '/{z}/{x}/{y}.png', {
+      subdomains: config['openstreetmap']['subdomains'],
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> ' + (lang() == 'de' ? 'Mitwirkende' : 'contributors')
+    }).addTo(map);
+    L.marker([ipv4_lat, ipv4_lon])
+      .addTo(map)
+      .openPopup();
+  }
+  if(config['applemaps']['active'] && map_service == 'applemaps' && map_service_ready){
+    document.getElementById('map-ipv4').classList.add('map-height');
+    var region = new mapkit.CoordinateRegion(
+      new mapkit.Coordinate(ipv4_lat, ipv4_lon),
+      new mapkit.CoordinateSpan(0.25, 0.25)
+    );
+    var map_ipv4 = new mapkit.Map('map-ipv4', {
+      region: region,
+      showsZoomControl: true
+    });
+    var annotation = new mapkit.MarkerAnnotation(
+      new mapkit.Coordinate(ipv4_lat, ipv4_lon),{}
+    );
+    map_ipv4.addAnnotation(annotation);
+  }
+  if(config['googlemaps']['active'] && map_service == 'googlemaps' && map_service_ready){
+    document.getElementById('map-ipv4').classList.add('map-height');
+    var pos = {lat: ipv4_lat, lng: ipv4_lon};
     var map_ipv4 = new google.maps.Map(document.getElementById('map-ipv4'), {
       zoom: 10,
       center: pos,
       disableDefaultUI: true,
-      zoomControl: true
+      zoomControl: true,
+      mapId: config['googlemaps']['map_id']
     });
-    var marker = new google.maps.Marker({
+    var marker = new google.maps.marker.AdvancedMarkerElement({
       position: pos,
       map: map_ipv4
     });
   }
 };
 
-function init_map_ipv6(){
-  if(GOOGLE_MAPS_ACTIVE && maps_ready){
-    document.getElementById('map-ipv6').classList.add('map-height');
-    var pos = {lat: ipv6_lat, lng: ipv6_lng};
-    var map_ipv6 = new google.maps.Map(document.getElementById('map-ipv6'), {
-      zoom: 10,
-      center: pos,
-      disableDefaultUI: true,
-      zoomControl: true
-    });
-    var marker = new google.maps.Marker({
-      position: pos,
-      map: map_ipv6
-    });
+function init_map(ip_version, lat, lon){
+  switch (map_service) {
+    case 'openstreetmap':
+      if(config['openstreetmap']['active']){
+        document.getElementById('map-' + ip_version).classList.add('map-height');
+        var map = L.map('map-' + ip_version)
+          .setView([lat, lon], 10);
+        var osm = L.tileLayer('//{s}.' + config['openstreetmap']['domain'] + '/{z}/{x}/{y}.png', {
+          subdomains: config['openstreetmap']['subdomains'],
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> ' + (lang() == 'de' ? 'Mitwirkende' : 'contributors')
+        }).addTo(map);
+        L.marker([lat, lon])
+          .addTo(map)
+          .openPopup();
+      } else {
+        document.getElementById('map-' + ip_version).innerHTML =
+          lang() === 'de'
+            ? '<div class="map-na-message">Der gewählte Kartenservice ist nicht länger verfügbar.</div>'
+            : '<div class="map-na-message">The selected map service is no longer available.</div>';
+      }
+      break;
+    case 'applemaps':
+      if(map_service_ready){
+        if(config['applemaps']['active']){
+          document.getElementById('map-' + ip_version).classList.add('map-height');
+          var region = new mapkit.CoordinateRegion(
+            new mapkit.Coordinate(lat, lon),
+            new mapkit.CoordinateSpan(0.25, 0.25)
+          );
+          var map = new mapkit.Map('map-' + ip_version, {
+            region: region,
+            showsZoomControl: true
+          });
+          var annotation = new mapkit.MarkerAnnotation(
+            new mapkit.Coordinate(lat, lon),{}
+          );
+          map.addAnnotation(annotation);
+        } else {
+          document.getElementById('map-' + ip_version).innerHTML =
+            lang() === 'de'
+              ? '<div class="map-na-message">Der gewählte Kartenservice ist nicht länger verfügbar.</div>'
+              : '<div class="map-na-message">The selected map service is no longer available.</div>';
+        }
+      }
+      break;
+    case 'googlemaps':
+      if(map_service_ready){
+        if(config['googlemaps']['active']){
+          document.getElementById('map-' + ip_version).classList.add('map-height');
+          var pos = {lat: lat, lng: lon};
+          var map = new google.maps.Map(document.getElementById('map-' + ip_version), {
+            zoom: 10,
+            center: pos,
+            disableDefaultUI: true,
+            zoomControl: true,
+            mapId: config['googlemaps']['map_id']
+          });
+          var marker = new google.maps.marker.AdvancedMarkerElement({
+            position: pos,
+            map: map
+          });
+        } else {
+          document.getElementById('map-' + ip_version).innerHTML =
+            lang() === 'de'
+              ? '<div class="map-na-message">Der gewählte Kartenservice ist nicht länger verfügbar.</div>'
+              : '<div class="map-na-message">The selected map service is no longer available.</div>';
+        }
+      }
+      break;
   }
 };
 
@@ -326,8 +410,8 @@ $(document).ready(function(){
     success: function(data){
       fill_gui_ip_area(data, 'v4');
       ipv4_lat = data['lat'];
-      ipv4_lng = data['lon'];
-      init_map_ipv4();
+      ipv4_lon = data['lon'];
+      init_map('ipv4', ipv4_lat, ipv4_lon);
     },
     error: function(error){
       fill_gui_ip_area(Array(), 'v4');
@@ -341,8 +425,8 @@ $(document).ready(function(){
     success: function(data){
       fill_gui_ip_area(data, 'v6');
       ipv6_lat = data['lat'];
-      ipv6_lng = data['lon'];
-      init_map_ipv6();
+      ipv6_lon = data['lon'];
+      init_map('ipv6', ipv6_lat, ipv6_lon);
 
     },
     error: function(error){

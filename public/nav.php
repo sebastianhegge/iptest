@@ -1,40 +1,47 @@
 <?php
 function nav_post(){
-  if(isset($_POST["checkbox_googlemaps"])){
-    setcookie('GOOGLE_MAPS_ACTIVE', '1', time()+7884000);
-    $GLOBALS['GOOGLE_MAPS_ACTIVE'] = true;
+  if(
+    isset($_POST["checkbox_ipapi"]) && $_POST["checkbox_ipapi"] == '1' &&
+    isset($_POST["checkbox_peeringdb"]) && $_POST["checkbox_peeringdb"] == '1' &&
+    isset($_POST["checkbox_ripe"]) && $_POST["checkbox_ripe"] == '1' &&
+    isset($_POST["checkbox_userstack"]) && $_POST["checkbox_userstack"] == '1'
+  ){
+    setcookie('TERMS_OF_SERVICE', 'accepted', time()+7884000);
   } else {
-    setcookie('GOOGLE_MAPS_ACTIVE', '0', time()+2628000);
-    $GLOBALS['GOOGLE_MAPS_ACTIVE'] = false;
+    setcookie('TERMS_OF_SERVICE', '', time()-1000);
   }
+
+  if(isset($_POST["checkbox_mapservice"])){
+    $mapservice = match ($_POST['checkbox_mapservice']) {
+      'openstreetmap' => 'openstreetmap',
+      'applemaps'     => 'applemaps',
+      'googlemaps'    => 'googlemaps',
+      default         => 'no_map'
+    };
+    setcookie('MAP_SERVICE', $mapservice, time()+7884000);
+  } else {
+    setcookie('MAP_SERVICE', '', time()-1000);
+  }
+
   header('Location: /', true, 302);
 }
 
 function nav_web(){
-  if(!isset($_COOKIE['GOOGLE_MAPS_ACTIVE']) && !isset($GLOBALS['GOOGLE_MAPS_ACTIVE'])){
+  if(isset($_COOKIE['TERMS_OF_SERVICE']) && $_COOKIE['TERMS_OF_SERVICE'] == 'accepted'){
+    setcookie('TERMS_OF_SERVICE', 'accepted', time()+7884000);
+    include_once '../app/app_minimal.php';
+    include_once '../templates/html.php';
+  } else {
     include_once '../app/config.php';
     include_once '../app/language.php';
     include_once '../app/base.php';
     include_once '../app/header.php';
     $nonce = substr(bin2hex(random_bytes(10)), 0, 10);
     include_once '../templates/html-cookie.php';
-  } else {
-    if(
-      (isset($_COOKIE['GOOGLE_MAPS_ACTIVE']) && $_COOKIE['GOOGLE_MAPS_ACTIVE'] == '1') ||
-      (isset($GLOBALS['GOOGLE_MAPS_ACTIVE']) && $GLOBALS['GOOGLE_MAPS_ACTIVE'] == true)
-    ){
-      setcookie('GOOGLE_MAPS_ACTIVE', '1', time()+7884000);
-      $GLOBALS['GOOGLE_MAPS_ACTIVE'] = true;
-    } else {
-      $GLOBALS['GOOGLE_MAPS_ACTIVE'] = false;
-    }
-    include_once '../app/app_minimal.php';
-    include_once '../templates/html.php';
   }
 }
 
 function nav_cli(){
-  $ip = $_SERVER['REMOTE_ADDR'];
   include_once '../app/app.php';
   include_once '../templates/cli.php';
 }

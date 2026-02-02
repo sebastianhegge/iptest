@@ -19,21 +19,48 @@ function header_web($nonce){
   if(HEADER_CSP){
     $csp[] = "default-src 'none'";
     $csp[] =  "base-uri 'self'";
-    if(isset($GLOBALS['GOOGLE_MAPS_ACTIVE']) && $GLOBALS['GOOGLE_MAPS_ACTIVE']){
-      $csp[] = "script-src 'nonce-".$nonce."' 'self' 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' blob: https://*.googleapis.com https://*.gstatic.com *.google.com https://*.ggpht.com *.googleusercontent.com";
-      $csp[] = "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com";
-      $csp[] = "img-src 'self' data: https://*.googleapis.com https://*.gstatic.com *.google.com *.googleusercontent.com";
-      $csp[] = "frame-src *.google.com";
-      $csp[] = "connect-src 'self' ipv4.".$_SERVER['HTTP_HOST']." ipv6.".$_SERVER['HTTP_HOST']." *.edns.ip-api.com https://*.googleapis.com *.google.com https://*.gstatic.com data: blob:";
-      $csp[] = "font-src https://fonts.gstatic.com";
-      $csp[] = "worker-src blob:";
+    if(isset($_COOKIE['MAP_SERVICE'])){
+      switch ($_COOKIE['MAP_SERVICE']){
+        case 'openstreetmap':
+          $csp[] = "script-src 'self' 'nonce-".$nonce."'";
+          $csp[] = "style-src 'self' 'nonce-".$nonce."'";
+          $csp[] = "img-src 'self' data: *.".OPENSTREETMAP_DOMAIN;
+          $csp[] = "connect-src 'self' ipv4.".$_SERVER['HTTP_HOST']." ipv6.".$_SERVER['HTTP_HOST']." *.edns.ip-api.com";
+          break;
+        case 'applemaps':
+          $csp[] = "script-src 'self' 'nonce-".$nonce."' 'wasm-unsafe-eval'";
+          $csp[] = "style-src 'self' 'nonce-".$nonce."'";
+          $csp[] = "img-src 'self' data: blob: https://*.apple-mapkit.com";
+          $csp[] = "connect-src 'self' blob: ipv4.".$_SERVER['HTTP_HOST']." ipv6.".$_SERVER['HTTP_HOST']." *.edns.ip-api.com https://*.apple-mapkit.com";
+          $csp[] = "worker-src blob: https://*.apple-mapkit.com";
+          $csp[] = "frame-src https://*.apple-mapkit.com";
+          break;
+        case 'googlemaps':
+          $csp[] = "script-src 'nonce-".$nonce."' 'self' 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' blob: https://*.googleapis.com https://*.gstatic.com *.google.com https://*.ggpht.com *.googleusercontent.com";
+          $csp[] = "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com";
+          $csp[] = "img-src 'self' data: https://*.googleapis.com https://*.gstatic.com *.google.com *.googleusercontent.com";
+          $csp[] = "frame-src *.google.com";
+          $csp[] = "connect-src 'self' ipv4.".$_SERVER['HTTP_HOST']." ipv6.".$_SERVER['HTTP_HOST']." *.edns.ip-api.com https://*.googleapis.com *.google.com https://*.gstatic.com data: blob:";
+          $csp[] = "font-src https://fonts.gstatic.com";
+          $csp[] = "worker-src blob:";
+          break;
+        default:
+          $csp[] = "script-src 'self' 'nonce-".$nonce."'";
+          $csp[] = "style-src 'self' 'nonce-".$nonce."'";
+          $csp[] = "img-src 'self' data:";
+          $csp[] = "connect-src 'self' ipv4.".$_SERVER['HTTP_HOST']." ipv6.".$_SERVER['HTTP_HOST']." *.edns.ip-api.com";
+      }
     } else {
       $csp[] = "script-src 'self' 'nonce-".$nonce."'";
       $csp[] = "style-src 'self' 'nonce-".$nonce."'";
       $csp[] = "img-src 'self' data:";
       $csp[] = "connect-src 'self' ipv4.".$_SERVER['HTTP_HOST']." ipv6.".$_SERVER['HTTP_HOST']." *.edns.ip-api.com";
     }
-    header("Content-Security-Policy: ".implode('; ', $csp).";");
+    if(HEADER_CSP_REPORT_ONLY){
+      header("Content-Security-Policy-Report-Only: ".implode('; ', $csp).";");
+    } else {
+      header("Content-Security-Policy: ".implode('; ', $csp).";");
+    }
   }
 
   if(HEADER_PP){
@@ -41,7 +68,6 @@ function header_web($nonce){
     $pp[] = "autoplay=()";
     $pp[] = "camera=()";
     $pp[] = "display-capture=()";
-    $pp[] = "document-domain=()";
     $pp[] = "encrypted-media=()";
     $pp[] = "fullscreen=(self)";
     $pp[] = "geolocation=()";

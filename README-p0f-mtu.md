@@ -1,3 +1,5 @@
+## How to create the p0f Tool and Service
+#### 1. Download & Compile p0f
 ```bash
 # creation gide:
 apt install gcc libpcap-dev
@@ -10,14 +12,31 @@ cd tools
 make
 # you need "p0f-client"
 ```
+#### 2. Install
 
+- Copy the 3 files (`p0f`, `p0f.fp` and `p0f-client`) to `/usr/local/bin/`
+- Create Service `/etc/systemd/system/p0f.service`:
 ```bash
-# p0f is startet via:
-/path/to/p0f -d -f /path/to/p0f.fp -s '/var/run/p0f.sock'
+[Unit]
+Description=p0f passive OS fingerprinting
+After=network.target
 
-# cron example:
-@reboot /path/to/p0f -d -f /path/to/p0f.fp -s '/var/run/p0f.sock'
+[Service]
+ExecStart=/usr/local/bin/p0f -f /usr/local/bin/p0f.fp -s '/var/run/p0f.sock'
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
 
-# p0f-client is used via, must be useable from PHP (see p0f.php):
-/path/to/p0f-client /var/run/p0f.sock <IP-ADDRESS>
+[Install]
+WantedBy=multi-user.target
 ```
+- reload systemctl daemon: `systemctl daemon-reload`
+- enable service: `systemctl enable p0f.service`
+
+#### 3. Usage
+Get ip address information from p0f via:
+```bash
+/usr/local/bin/p0f-client /var/run/p0f.sock <IP-ADDRESS>
+```
+is also used via PHP inside `p0f.php`

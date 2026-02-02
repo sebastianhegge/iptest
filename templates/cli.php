@@ -6,53 +6,89 @@ function print_data($current_data){
   }
 }
 
-$current_data = Array();
+function print_color($value, $color = '', $bold = false){
+  print("\033[");
+  if($bold){
+    print('1;');
+  }
+  switch ($color) {
+    case 'red':
+      print('31');
+      break;
+    case 'green':
+      print('32');
+      break;
+    case 'yellow':
+      print('33');
+      break;
+    case 'blue':
+      print('34');
+      break;
+  }
+  print('m'.$value."\033[0m");
+}
 
 if(isset($data['ip']) && $data['ip'] != NULL && $data['ip'] != ''){
-  $current_data['ip'] = $data['ip'];
+  print_color($data['ip']."\n", 'green');
 }
 
 if(isset($data['hostname']) && $data['hostname'] != NULL && $data['hostname'] != ''){
-  $current_data['hostname'] = $data['hostname'];
+  print($data['hostname']."\n");
+}
+
+if(isset($data['connection_mtu']) && $data['connection_mtu'] != NULL && $data['connection_mtu'] != ''){
+  print_color("MTU ".$data['connection_mtu']."\n", 'green');
+}
+
+if(isset($data['connection_distance']) && $data['connection_distance'] != NULL && $data['connection_distance'] != ''){
+  print_color($data['connection_distance'].' hops'."\n", 'green');
 }
 
 if(isset($data['isp']) && $data['isp'] != NULL && $data['isp'] != ''){
-  $current_data['isp'] = $data['isp'];
+  print('ISP: '.$data['isp']."\n");
 }
 
+$address = '';
 if(isset($data['zip']) && $data['zip'] != NULL && $data['zip'] != ''){
-  $current_data['address'] = $data['zip'];
+  $address .= $data['zip'];
 }
 if(isset($data['city']) && $data['city'] != NULL && $data['city'] != ''){
-  if(!string_ends_with($current_data['address'], ', ') && !string_ends_with($current_data['address'], $data['zip'])){
-    $current_data['address'] .= ',';
+  if($address != ''){
+    $address .= ' ';
   }
-  $current_data['address'] .= ' '.$data['city'];
+  $address .= $data['city'];
 }
 if(isset($data['country']) && $data['country'] != NULL && $data['country'] != ''){
-  if(!string_ends_with($current_data['address'], ', ')){
-    $current_data['address'] .= ', ';
+  if($address != ''){
+    $address .= ', ';
   }
-  $current_data['address'] .= $data['country'];
+  $address .= $data['country'];
+}
+if($address != ''){
+  print($address."\n");
 }
 
 if(
   isset($data['network_start_address']) && $data['network_start_address'] != NULL && $data['network_start_address'] != '' &&
   isset($data['network_end_address']) && $data['network_end_address'] != NULL && $data['network_end_address'] != ''
 ){
-  $current_data['network_range'] = $data['network_start_address'].' - '.$data['network_end_address'];
+  print($data['network_start_address'].' - '.$data['network_end_address']."\n");
 }
 
 if(isset($data['as_number']) && $data['as_number'] != NULL && $data['as_number'] != ''){
-  $current_data['as_number'] = $data['as_number'];
+  print("AS ".$data['as_number']."\n");
 }
 
-if(isset($data['connection_mtu']) && $data['connection_mtu'] != NULL && $data['connection_mtu'] != ''){
-  $current_data['connection_mtu'] = $data['connection_mtu'];
-}
+print("\n");
 
-if(isset($data['connection_distance']) && $data['connection_distance'] != NULL && $data['connection_distance'] != ''){
-  $current_data['connection_distance'] = $data['connection_distance'];
-}
-
-print_data($current_data);
+print("to get ".($data['ip_version'] == 'v4' ? 'v6' : 'v4')." address do:\n");
+print_color("  curl -".($data['ip_version'] == 'v4' ? '6 ' : '4 ').$_SERVER['HTTP_HOST']."\n", 'blue', true);
+print("\n");
+print("to get your DNS resolver do:\n");
+#print_color('  dig +short TXT dns.ipte.st'."\n", 'blue', true);
+#print("or\n");
+print_color('  curl -L edns.ip-api.com'."\n", 'blue', true);
+print("\n");
+print("afterwards do:\n");
+print_color('  curl '.$_SERVER['HTTP_HOST'].'?ip=', 'blue', true);
+print_color('<IP>'."\n", 'red');

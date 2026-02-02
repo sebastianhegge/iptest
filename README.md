@@ -36,7 +36,7 @@ It caches all API responses and is available in DE and EN. See a demo at [ipte.s
  * Traffic info
 * Resulting suspected internet service provider incl. postal address (IPv4 and IPv6)
 * AS-informations (number, name and company), (IPv4 and IPv6)
-* Google Maps Map for postal address (IPv4 and IPv6)
+* Map Service for postal address (IPv4 and IPv6), you (and also the client) can select between OpenStreetMap, Apple Maps, Google Maps or no Map
 
 ## Requirements
 
@@ -47,7 +47,10 @@ It caches all API responses and is available in DE and EN. See a demo at [ipte.s
   * production-domain (for example DOMAIN.de), reachable via IPv4 and IPv6 (with an A Record and an AAAA Record)
   * ipv4 subdomain (ipv4.DOMAIN.de), reachable only via IPv4 (only an A Record)
   * ipv6 subdomain (ipv6.DOMAIN.de), reachable only via IPv6 (only an AAAA Record)
-* Google Maps API Key (optional)
+* Map Services
+  * OpenStreetMap (Sub)domain and Tile-Server-(Sub)domain (optional)
+  * Apple Maps API Key (optional)
+  * Google Maps API Key (optional)
 * p0f-mtu running on same Server [GitHub](https://github.com/ValdikSS/p0f-mtu) / [README](README-p0f-mtu.md)
 
 ## Install

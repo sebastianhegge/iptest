@@ -6,11 +6,10 @@ function get_url_content($url) {
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_MAXREDIRS      => 10,
     CURLOPT_ENCODING       => "",
-    CURLOPT_USERAGENT      => "",
+    CURLOPT_USERAGENT      => CURL_USERAGENT,
     CURLOPT_AUTOREFERER    => true,
     CURLOPT_CONNECTTIMEOUT => 10,
     CURLOPT_TIMEOUT        => 10,
-    CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
   );
 
   $ch = curl_init($url);
@@ -52,21 +51,29 @@ function translate($string){
   }
 
   $strings = array(
-    'Connection via'           => 'Verbindung über',
-    'Device type'              => 'Geräte-Typ',
-    'Operating system'         => 'Betriebssystem',
-    'Language'                 => 'Sprache',
-    'Address'                  => 'Adresse',
-    'Connection type'          => 'Anschluss-Typ',
-    'Hop distance'             => 'Hop-Distanz',
-    'Network'                  => 'Netz',
-    'Network name'             => 'Netz-Name',
-    'Network contact'          => 'Netz-Kontakt',
-    'Autonomous system'        => 'Autonomes System',
-    'Imprint & Privacy policy' => 'Impressum & Datenschutz',
-    'Source on GitHub'         => 'Quellcode auf GitHub',
-    'Accept'                   => 'Akzeptieren',
-    'Leave Website'            => 'Webseite verlassen',
+    'Connection via'                        => 'Verbindung über',
+    'Device type'                           => 'Geräte-Typ',
+    'Operating system'                      => 'Betriebssystem',
+    'Language'                              => 'Sprache',
+    'Address'                               => 'Adresse',
+    'Connection type'                       => 'Anschluss-Typ',
+    'Hop distance'                          => 'Hop-Distanz',
+    'Network'                               => 'Netz',
+    'Network name'                          => 'Netz-Name',
+    'Network contact'                       => 'Netz-Kontakt',
+    'Autonomous system'                     => 'Autonomes System',
+    'Imprint & Privacy policy'              => 'Impressum & Datenschutz',
+    'Source on GitHub'                      => 'Quellcode auf GitHub',
+    'Cookie & Privacy Notice'               => 'Cookie- & Datenschutz-Hinweis',
+    'This website uses cookies to store these settings.' => 'Diese Webseite setzt Cookies, um diese Einstellungen zu speichern.',
+    'This website can only be used if consent is given to the use of all required services.' => 'Diese Seite kann nur genutzt werden, wenn der Nutzung aller erforderlicher Dienste zugestimmt wird.',
+    'Please select and accept the usage of' => 'Bitte wählen und akzeptieren sie die Nutzung',
+    'The services provided by'              => 'Die Dienste von',
+    'required'                              => 'erforderlich',
+    'Please select a Map Service'           => 'Bitte wählen sie einen Kartenservice',
+    'No map service'                        => 'Kein Kartenservice',
+    'Accept'                                => 'Akzeptieren',
+    'Leave Website'                         => 'Webseite verlassen',
   );
 
   if(!array_key_exists($string, $strings)){
@@ -105,9 +112,48 @@ function mp($array, $glue = ' '){
   }
 }
 
-function activate_google_maps($nonce){
-  if($GLOBALS['GOOGLE_MAPS_ACTIVE']){
-    print("<script async nonce=\"".$nonce."\" src=\"https://maps.googleapis.com/maps/api/js?key=".GOOGLE_MAPS_API_KEY."&callback=maps_callback&region=".lang()."&language=".lang()."\"></script>\n");
+function export_vars_to_js($nonce){
+  $js_config = [];
+  $js_config['openstreetmap']['active'] = OPENSTREETMAP_ACTIVE;
+  if(OPENSTREETMAP_ACTIVE){
+    $js_config['openstreetmap']['domain'] = OPENSTREETMAP_DOMAIN;
+    $js_config['openstreetmap']['subdomains'] = OPENSTREETMAP_SUBDOMAINS;
+  }
+  $js_config['applemaps']['active'] = APPLE_MAPS_ACTIVE;
+  if(APPLE_MAPS_ACTIVE){
+    $js_config['applemaps']['api_key'] = APPLE_MAPS_API_KEY;
+  }
+  $js_config['googlemaps']['active'] = GOOGLE_MAPS_ACTIVE;
+  if(GOOGLE_MAPS_ACTIVE){
+    $js_config['googlemaps']['api_key'] = GOOGLE_MAPS_API_KEY;
+    $js_config['googlemaps']['map_id'] = GOOGLE_MAPS_MAP_ID;
+  }
+
+  print("<script nonce=\"".$nonce."\" type=\"text/javascript\">\n");
+  print("const config = ".json_encode($js_config, JSON_UNESCAPED_SLASHES)."\n");
+  print("</script>\n");
+}
+
+function activate_map_service($nonce){
+  if(isset($_COOKIE['MAP_SERVICE'])){
+    switch ($_COOKIE['MAP_SERVICE']){
+      case 'openstreetmap':
+        if(OPENSTREETMAP_ACTIVE){
+          print("<link nonce=\"".$nonce."\" rel=\"stylesheet\" href=\"/assets/leaflet/leaflet.css?v=1.9.4\"></script>\n");
+          print("<script nonce=\"".$nonce."\" src=\"/assets/leaflet/leaflet.js?v=1.9.4\"></script>\n");
+        }
+        break;
+      case 'applemaps':
+        if(APPLE_MAPS_ACTIVE){
+          print("<script crossorigin async nonce=\"".$nonce."\" src=\"https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.core.js\" data-callback=\"map_service_callback\" data-libraries=\"map,annotations\" data-language=\"".lang()."\" data-token=\"".APPLE_MAPS_API_KEY."\"></script>\n");
+        }
+        break;
+      case 'googlemaps':
+        if(GOOGLE_MAPS_ACTIVE){
+          print("<script crossorigin async nonce=\"".$nonce."\" src=\"https://maps.googleapis.com/maps/api/js?key=".GOOGLE_MAPS_API_KEY."&callback=map_service_callback&loading=async&libraries=marker&region=".lang()."&language=".lang()."\"></script>\n");
+        }
+        break;
+    }
   }
 }
 

@@ -6,66 +6,113 @@ if(false){
   error_reporting(E_ALL);
 }
 
-############################
-### database settings    ###
-############################
+##############################
+### basic settings         ###
+##############################
+
+# don't leave blank, peering db api will reject requests!
+define('CURL_USERAGENT', '');
+
+##############################
+
+
+
+##############################
+### database settings      ###
+##############################
 
 define('DB_HOST', '');
 define('DB_DATABASE', '');
 define('DB_USER', '');
 define('DB_PASSWORD', '');
 
-############################
+##############################
 
 
 
-############################
-### Google Maps settings ###
-############################
+##############################
+### OpenStreetMap settings ###
+##############################
 
 # WARNING! will be exposed into javascript!
+# you can configure a subdomains array by providing a range:
+# define('OPENSTREETMAP_SUBDOMAINS', range('a', 'z'));
+define('OPENSTREETMAP_ACTIVE', true);
+define('OPENSTREETMAP_DOMAIN', 'openstreetmap.de');
+define('OPENSTREETMAP_SUBDOMAINS', 'tile');
+
+##############################
+
+
+
+##############################
+### Apple Maps settings    ###
+##############################
+
+# WARNING! will be exposed into javascript!
+define('APPLE_MAPS_ACTIVE', true);
+switch ($_SERVER['HTTP_HOST']){
+  case '<DOMAIN>':
+    define('APPLE_MAPS_API_KEY', '');
+    break;
+  case '<OTHER_DOMAIN>':
+    define('APPLE_MAPS_API_KEY', '');
+    break;
+}
+
+##############################
+
+
+
+##############################
+### Google Maps settings   ###
+##############################
+
+# WARNING! will be exposed into javascript!
+define('GOOGLE_MAPS_ACTIVE', true);
 define('GOOGLE_MAPS_API_KEY', '');
+define('GOOGLE_MAPS_MAP_ID', '');
 
-############################
+##############################
 
 
 
-############################
-### IP-API settings      ###
-############################
+##############################
+### IP-API settings        ###
+##############################
 
 define('IP_API_API_KEY', '');
 define('IP_API_PAYED_VERSION', false);
 
-############################
+##############################
 
 
 
-############################
-### userstack settings   ###
-############################
+##############################
+### userstack settings     ###
+##############################
 
 define('USERSTACK_API_KEY', '');
 define('USERSTACK_PAYED_VERSION', false);
 
-############################
+##############################
 
 
 
-############################
-### p0f settings         ###
-############################
+##############################
+### p0f settings           ###
+##############################
 
-define('P0F_CLIENT_PATH', '/var/www/iptest/bin/p0f-client');
+define('P0F_CLIENT_PATH', '/usr/local/bin/p0f-client');
 define('P0F_SOCK_PATH', '/var/run/p0f.sock');
 
-############################
+##############################
 
 
 
-############################
-### header settings      ###
-############################
+##############################
+### header settings        ###
+##############################
 
 # activate header: X-Frame-Options with "SAMEORIGIN"
 define('HEADER_XFO', true);
@@ -81,6 +128,7 @@ define('HEADER_RP', true);
 
 # activate header Content-Security-Policy
 define('HEADER_CSP', true);
+define('HEADER_CSP_REPORT_ONLY', false);
 
 # activate header Permissions-Policy
 define('HEADER_PP', true);
@@ -89,4 +137,4 @@ define('HEADER_PP', true);
 # WARNING! once enabled, site will only be available over https!
 define('HEADER_HSTS', false);
 
-############################
+##############################
